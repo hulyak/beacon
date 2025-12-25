@@ -26,7 +26,7 @@ export class BeaconVoiceManager {
   private currentSession: VoiceSession | null = null;
   private uiState: VoiceUIState;
   private listeners: Map<string, Function[]> = new Map();
-  private commandQueue: VoiceCommand[] = [];
+  private commandQueue: SupplyChainVoiceCommand[] = [];
   private isProcessingQueue = false;
 
   constructor(config: BeaconVoiceConfig) {
@@ -74,7 +74,7 @@ export class BeaconVoiceManager {
       this.emit('initialized', { success: true });
     } catch (error) {
       console.error('Failed to initialize voice system:', error);
-      this.emit('error', { error: error.message });
+      this.emit('error', { error: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 
@@ -126,7 +126,12 @@ export class BeaconVoiceManager {
       return this.currentSession.id;
     } catch (error) {
       console.error('Failed to start voice session:', error);
-      this.updateUIState({ connectionStatus: 'error', error: error.message });
+      this.updateUIState({ 
+        connectionStatus: 'error', 
+        error: error instanceof Error ? error.message : 'Unknown error',
+        isListening: false,
+        isProcessing: false,
+      });
       throw error;
     }
   }
@@ -153,7 +158,10 @@ export class BeaconVoiceManager {
       }
     } catch (error) {
       console.error('Failed to start listening:', error);
-      this.updateUIState({ isListening: false, error: error.message });
+      this.updateUIState({ 
+        isListening: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
       throw error;
     }
   }
@@ -173,7 +181,10 @@ export class BeaconVoiceManager {
       }
     } catch (error) {
       console.error('Failed to stop listening:', error);
-      this.updateUIState({ isProcessing: false, error: error.message });
+      this.updateUIState({ 
+        isProcessing: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
       throw error;
     }
   }
@@ -211,7 +222,10 @@ export class BeaconVoiceManager {
       };
     } catch (error) {
       console.error('Failed to process text command:', error);
-      this.updateUIState({ isProcessing: false, error: error.message });
+      this.updateUIState({ 
+        isProcessing: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
       throw error;
     }
   }
@@ -269,7 +283,7 @@ export class BeaconVoiceManager {
   /**
    * Handle text response from ElevenLabs
    */
-  private handleTextResponse(message: any): void {
+  private async handleTextResponse(message: any): Promise<void> {
     if (!this.currentSession) return;
 
     const response: VoiceResponse = {
@@ -286,7 +300,58 @@ export class BeaconVoiceManager {
       currentCommand: undefined 
     });
 
+    // Speak the response if not muted and auto-play is enabled
+    if (this.config.autoPlayResponses && response.text) {
+      try {
+        this.updateUIState({ isPlaying: true });
+        
+        // Use ElevenLabs TTS to speak the response
+        const audioData = await this.client.textToSpeech(response.text);
+        await this.client.playAudio(audioData);
+        
+        this.updateUIState({ isPlaying: false });
+        this.emit('audioPlayed', { audioData });
+      } catch (error) {
+        console.error('Failed to speak response:', error);
+        this.updateUIState({ isPlaying: false });
+        
+        // Fallback to browser speech synthesis
+        this.speakWithBrowserTTS(response.text);
+      }
+    }
+
     this.emit('responseReceived', { response });
+  }
+
+  /**
+   * Fallback text-to-speech using browser Speech Synthesis API
+   */
+  private speakWithBrowserTTS(text: string): void {
+    try {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = this.currentSession?.context.userPreferences.speechRate || 1.0;
+        utterance.volume = this.currentSession?.context.userPreferences.volume || 1.0;
+        utterance.lang = this.currentSession?.context.userPreferences.language || 'en-US';
+        
+        utterance.onstart = () => {
+          this.updateUIState({ isPlaying: true });
+        };
+        
+        utterance.onend = () => {
+          this.updateUIState({ isPlaying: false });
+        };
+        
+        utterance.onerror = (error) => {
+          console.error('Browser TTS error:', error);
+          this.updateUIState({ isPlaying: false });
+        };
+        
+        window.speechSynthesis.speak(utterance);
+      }
+    } catch (error) {
+      console.error('Browser TTS failed:', error);
+    }
   }
 
   /**
@@ -367,7 +432,7 @@ export class BeaconVoiceManager {
    * Extract entities from text (simplified)
    */
   private extractEntities(text: string): any[] {
-    const entities = [];
+    const entities: any[] = [];
     const lowerText = text.toLowerCase();
 
     // Time ranges
@@ -532,8 +597,40 @@ export class BeaconVoiceManager {
   }
 
   /**
-   * Get current state
+   * Manually speak text using TTS
    */
+  async speakText(text: string): Promise<void> {
+    if (!text) return;
+
+    try {
+      this.updateUIState({ isPlaying: true });
+      
+      // Try ElevenLabs TTS first
+      const audioData = await this.client.textToSpeech(text);
+      await this.client.playAudio(audioData);
+      
+      this.updateUIState({ isPlaying: false });
+      this.emit('audioPlayed', { audioData });
+    } catch (error) {
+      console.error('ElevenLabs TTS failed, using browser fallback:', error);
+      this.updateUIState({ isPlaying: false });
+      
+      // Fallback to browser speech synthesis
+      this.speakWithBrowserTTS(text);
+    }
+  }
+
+  /**
+   * Stop any currently playing audio
+   */
+  stopSpeaking(): void {
+    // Stop browser speech synthesis
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    
+    this.updateUIState({ isPlaying: false });
+  }
   getState(): VoiceUIState {
     return { ...this.uiState };
   }

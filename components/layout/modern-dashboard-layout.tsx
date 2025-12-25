@@ -1,7 +1,7 @@
 'use client';
 
 // Modern Dashboard Layout - Shopify-inspired design
-import React, { useState } from 'react';
+import React from 'react';
 import { ModernNavigation } from './modern-navigation';
 import { cn } from '@/lib/utils';
 

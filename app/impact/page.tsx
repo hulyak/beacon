@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ModernImpactDashboard from '@/app/components/modern/ModernImpactDashboard';
+import { PageHeaderCompact } from '@/components/layout/page-header';
 
 // Modern Impact Assessment Dashboard Page
 // Uses the new Shopify-inspired design system
@@ -13,7 +14,15 @@ const ImpactPage: React.FC = () => {
   };
 
   return (
-    <ModernImpactDashboard onVoiceCommand={handleVoiceCommand} />
+    <div className="min-h-screen bg-gray-50">
+      {/* Page Header with Beacon Branding */}
+      <PageHeaderCompact 
+        title="Impact Assessment"
+        description="Financial and operational impact analysis powered by Beacon intelligence"
+      />
+      
+      <ModernImpactDashboard onVoiceCommand={handleVoiceCommand} />
+    </div>
   );
 };
 

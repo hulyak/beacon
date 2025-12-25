@@ -9,6 +9,7 @@ import { AgentResults, AgentResult } from '../components/dashboard/AgentResults'
 import { KeyMetricsKPI } from '../components/dashboard/KeyMetricsKPI';
 import { VoiceActivationBanner } from '../components/dashboard/VoiceActivationBanner';
 import { VoiceDashboardProvider } from '@/lib/voice-dashboard-context';
+import { PageHeaderCompact } from '@/components/layout/page-header';
 
 // Dynamic import for 3D Globe (Three.js doesn't work with SSR)
 const Globe3D = dynamic(() => import('../components/dashboard/Globe3D'), {
@@ -138,25 +139,19 @@ export default function DashboardPage() {
 
   return (
     <VoiceDashboardProvider>
-      <div className="min-h-screen bg-gray-50 px-4 lg:px-6">
-        <div className="max-w-[1800px] mx-auto py-6">
-          {/* Page Header */}
-          <div className="mb-6">
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-1">
-              <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-                Voice-Powered
-              </span>{' '}
-              Supply Chain Dashboard
-            </h1>
-            <p className="text-gray-600 text-sm lg:text-base">
-              Speak naturally to analyze risks, run simulations, and get AI-powered insights
-            </p>
-          </div>
-
-          {/* Voice Activation Banner - Most Prominent */}
-          <div className="mb-6">
-            <VoiceActivationBanner />
-          </div>
+      <div className="min-h-screen bg-gray-50">
+        {/* Page Header with Beacon Branding */}
+        <PageHeaderCompact 
+          title="Supply Chain Dashboard"
+          description="Voice-powered analytics and AI insights for intelligent supply chain management"
+        />
+        
+        <div className="px-4 lg:px-6">
+          <div className="max-w-[1800px] mx-auto py-6">
+            {/* Voice Activation Banner - Most Prominent */}
+            <div className="mb-6">
+              <VoiceActivationBanner />
+            </div>
 
           {/* Top Section: KPIs (Full Width) */}
           <div className="mb-6">
@@ -196,6 +191,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
+          </div>
         </div>
       </div>
     </VoiceDashboardProvider>

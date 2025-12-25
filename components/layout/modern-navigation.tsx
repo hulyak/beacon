@@ -15,14 +15,14 @@ import {
   User,
   Menu,
   X,
-  Mic,
-  MicOff,
   ChevronDown,
   Home,
   Cpu,
-  PlayCircle
+  PlayCircle,
+  Sparkles
 } from 'lucide-react';
 import { ModernButton } from '../ui/modern-button';
+import { BeaconLogo } from '../ui/beacon-logo';
 
 interface NavigationItem {
   id: string;
@@ -84,6 +84,13 @@ const navigationItems: NavigationItem[] = [
     icon: <Target size={20} />,
     href: '/optimization',
   },
+  {
+    id: 'features',
+    label: 'Advanced Features',
+    icon: <Sparkles size={20} />,
+    href: '/features',
+    badge: 'New',
+  },
 ];
 
 interface ModernNavigationProps {
@@ -96,8 +103,6 @@ interface ModernNavigationProps {
 export function ModernNavigation({
   currentPath = '/',
   onNavigate,
-  onVoiceToggle,
-  isVoiceActive = false,
 }: ModernNavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -131,15 +136,7 @@ export function ModernNavigation({
             icon={isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           />
           
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">B</span>
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-lg font-semibold text-gray-900">Beacon</h1>
-              <p className="text-xs text-gray-500">Supply Chain Intelligence</p>
-            </div>
-          </div>
+          <BeaconLogo size="md" showTagline={true} className="hidden sm:block" />
         </div>
 
         {/* Center - Search */}
@@ -156,17 +153,6 @@ export function ModernNavigation({
 
         {/* Right side */}
         <div className="flex items-center gap-3">
-          {/* Voice Toggle */}
-          <ModernButton
-            variant={isVoiceActive ? 'primary' : 'outline'}
-            size="sm"
-            onClick={onVoiceToggle}
-            icon={isVoiceActive ? <Mic size={16} /> : <MicOff size={16} />}
-            className="hidden sm:flex"
-          >
-            {isVoiceActive ? 'Listening' : 'Voice'}
-          </ModernButton>
-
           {/* Notifications */}
           <ModernButton
             variant="ghost"
@@ -192,22 +178,14 @@ export function ModernNavigation({
 
       {/* Sidebar */}
       <aside className={cn(
-        'fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-out lg:translate-x-0',
+        'fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-out lg:translate-x-0 lg:top-16',
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       )}>
         <div className="flex flex-col h-full">
           {/* Mobile header */}
           <div className="lg:hidden p-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">B</span>
-                </div>
-                <div>
-                  <h1 className="text-lg font-semibold text-gray-900">Beacon</h1>
-                  <p className="text-xs text-gray-500">Supply Chain Intelligence</p>
-                </div>
-              </div>
+              <BeaconLogo size="md" showTagline={true} />
               <ModernButton
                 variant="ghost"
                 size="sm"

@@ -30,6 +30,8 @@ export class ElevenLabsVoiceClient {
    */
   async initializeConversation(conversationConfig: ConversationConfig): Promise<string> {
     try {
+      console.log('Initializing ElevenLabs conversation with agent:', conversationConfig.agentId);
+      
       const response = await fetch('https://api.elevenlabs.io/v1/convai/conversations', {
         method: 'POST',
         headers: {
@@ -41,11 +43,17 @@ export class ElevenLabsVoiceClient {
         }),
       });
 
+      console.log('ElevenLabs API response status:', response.status);
+
       if (!response.ok) {
-        throw new Error(`Failed to initialize conversation: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('ElevenLabs API error:', errorText);
+        throw new Error(`Failed to initialize conversation: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('ElevenLabs conversation initialized:', data);
+      
       this.conversationId = data.conversation_id;
       
       return data.conversation_id;

@@ -8,8 +8,8 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Don't show navigation on landing page
-  const showNavigation = pathname !== '/';
+  // Don't show navigation on landing page or features page (has its own layout)
+  const showNavigation = pathname !== '/' && pathname !== '/features';
 
   const handleNavigate = (path: string) => {
     router.push(path);

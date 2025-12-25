@@ -25,6 +25,8 @@ interface UseBeaconVoiceReturn {
   startListening: () => Promise<void>;
   stopListening: () => Promise<void>;
   sendTextCommand: (text: string) => Promise<void>;
+  speakText: (text: string) => Promise<void>;
+  stopSpeaking: () => void;
   
   // Utilities
   toggleListening: () => Promise<void>;
@@ -75,7 +77,7 @@ export function useBeaconVoice(options: UseBeaconVoiceOptions = {}): UseBeaconVo
         voiceManagerRef.current = voiceManager;
 
         // Set up event listeners
-        voiceManager.on('initialized', ({ success }) => {
+        voiceManager.on('initialized', ({ success }: { success: boolean }) => {
           if (success) {
             setIsInitialized(true);
             setIsSupported(true);
@@ -83,24 +85,24 @@ export function useBeaconVoice(options: UseBeaconVoiceOptions = {}): UseBeaconVo
           }
         });
 
-        voiceManager.on('stateChanged', ({ state: newState }) => {
+        voiceManager.on('stateChanged', ({ state: newState }: { state: VoiceUIState }) => {
           setState(newState);
         });
 
-        voiceManager.on('commandReceived', ({ command }) => {
+        voiceManager.on('commandReceived', ({ command }: { command: VoiceCommand }) => {
           options.onCommand?.(command);
         });
 
-        voiceManager.on('responseReceived', ({ response }) => {
+        voiceManager.on('responseReceived', ({ response }: { response: VoiceResponse }) => {
           options.onResponse?.(response);
         });
 
-        voiceManager.on('error', ({ error: errorMessage }) => {
+        voiceManager.on('error', ({ error: errorMessage }: { error: string }) => {
           setError(errorMessage);
           options.onError?.(errorMessage);
         });
 
-        voiceManager.on('action', ({ type, payload }) => {
+        voiceManager.on('action', ({ type, payload }: { type: VoiceActionType; payload: any }) => {
           handleVoiceAction(type, payload);
         });
 
@@ -221,6 +223,28 @@ export function useBeaconVoice(options: UseBeaconVoiceOptions = {}): UseBeaconVo
     }
   }, []);
 
+  // Speak text using TTS
+  const speakText = useCallback(async (text: string) => {
+    if (!voiceManagerRef.current) {
+      throw new Error('Voice manager not initialized');
+    }
+
+    try {
+      await voiceManagerRef.current.speakText(text);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to speak text';
+      setError(errorMessage);
+      throw err;
+    }
+  }, []);
+
+  // Stop speaking
+  const stopSpeaking = useCallback(() => {
+    if (voiceManagerRef.current) {
+      voiceManagerRef.current.stopSpeaking();
+    }
+  }, []);
+
   // Toggle listening state
   const toggleListening = useCallback(async () => {
     if (state.isListening) {
@@ -245,6 +269,8 @@ export function useBeaconVoice(options: UseBeaconVoiceOptions = {}): UseBeaconVo
     startListening,
     stopListening,
     sendTextCommand,
+    speakText,
+    stopSpeaking,
     
     // Utilities
     toggleListening,
