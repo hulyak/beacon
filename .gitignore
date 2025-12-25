@@ -10,6 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
+# node_modules in any subdirectory
+**/node_modules
+
 # testing
 /coverage
 
@@ -39,3 +42,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Google Cloud
+.gcloudignore
+service-account-key.json
+
+# Functions
+functions/*/node_modules
+functions/*/dist
+functions/*/.env
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

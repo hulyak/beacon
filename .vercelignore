@@ -1,0 +1,39 @@
+# Dependencies
+node_modules
+functions/node_modules
+
+# Testing
+test-*.js
+*.test.ts
+*.test.tsx
+__tests__
+
+# Documentation
+*.md
+!README.md
+docs
+
+# Scripts
+scripts
+
+# ElevenLabs config (not needed in deployment)
+elevenlabs
+
+# Environment files
+.env.local
+.env*.local
+
+# IDE
+.vscode
+.idea
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+npm-debug.log*
+
+# Functions (deployed separately)
+functions

@@ -1,0 +1,15 @@
+{
+  "name": "get-metrics",
+  "version": "1.0.0",
+  "description": "VoiceOps Get Metrics Cloud Function",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.4.2"
+  },
+  "engines": {
+    "node": "20"
+  }
+}

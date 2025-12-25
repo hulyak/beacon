@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f9fafb;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --border: #e5e7eb;
+  --ring: #3b82f6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Force light mode - no dark mode support */
+body {
+  background: #f9fafb;
+  color: #111827;
+  font-family: Arial, Helvetica, sans-serif;
+}
+/* VoiceButton custom animations */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animation-delay-75 {
+  animation-delay: 75ms;
+}
+
+.animation-delay-150 {
+  animation-delay: 150ms;
+}
+
+/* Beacon specific styles */
+.voice-button-sound-waves {
+  position: relative;
+}
+
+.voice-button-sound-waves::before,
+.voice-button-sound-waves::after {
+  content: '';
+  position: absolute;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.voice-button-sound-waves::before {
+  inset: -8px;
+  animation-delay: 0s;
+}
+
+.voice-button-sound-waves::after {
+  inset: -16px;
+  animation-delay: 0.5s;
+}
+/* Mobile-first responsive design */
+@media (max-width: 320px) {
+  .voice-button-large {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+/* Improved focus styles for accessibility */
+.focus-visible:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for status changes */
+.status-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom scrollbar for transcript */
+.transcript-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.transcript-messages::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 3px;
+}
+
+.transcript-messages::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 3px;
+}
+
+.transcript-messages::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .border-gray-200 {
+    border-color: #000000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce {
+    animation: none;
+  }
+  
+  .transition-all,
+  .transition-colors {
+    transition: none;
+  }
+}

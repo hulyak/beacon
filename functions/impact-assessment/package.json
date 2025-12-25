@@ -1,0 +1,30 @@
+{
+  "name": "voiceops-impact-assessment",
+  "version": "1.0.0",
+  "description": "VoiceOps AI Impact Assessment Cloud Functions",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "functions-framework --target=impactAssessment --source=.",
+    "deploy": "gcloud functions deploy impactAssessment --runtime nodejs20 --trigger-http --allow-unauthenticated --region us-central1",
+    "deploy:all": "npm run deploy:financial && npm run deploy:delays && npm run deploy:cascade && npm run deploy:kpi && npm run deploy:comprehensive",
+    "deploy:financial": "gcloud functions deploy calculateFinancialImpact --runtime nodejs20 --trigger-http --allow-unauthenticated --region us-central1 --entry-point=calculateFinancialImpact",
+    "deploy:delays": "gcloud functions deploy trackDeliveryDelays --runtime nodejs20 --trigger-http --allow-unauthenticated --region us-central1 --entry-point=trackDeliveryDelays",
+    "deploy:cascade": "gcloud functions deploy analyzeCascadeEffects --runtime nodejs20 --trigger-http --allow-unauthenticated --region us-central1 --entry-point=analyzeCascadeEffects",
+    "deploy:kpi": "gcloud functions deploy generateKPIMetrics --runtime nodejs20 --trigger-http --allow-unauthenticated --region us-central1 --entry-point=generateKPIMetrics",
+    "deploy:comprehensive": "gcloud functions deploy comprehensiveImpactAnalysis --runtime nodejs20 --trigger-http --allow-unauthenticated --region us-central1 --entry-point=comprehensiveImpactAnalysis"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0",
+    "express": "^4.18.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": "20"
+  }
+}

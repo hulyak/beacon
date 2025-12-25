@@ -1,0 +1,22 @@
+{
+  "name": "run-scenario",
+  "version": "1.0.0",
+  "description": "VoiceOps Scenario Simulation Cloud Function",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node index.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.4.2",
+    "@google-cloud/vertexai": "^1.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": "20"
+  }
+}
