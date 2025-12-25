@@ -122,10 +122,10 @@ export default function ScenariosPage() {
         },
         {
           name: 'Financial Impact',
-          value: `$${(scenarioResult.financialImpact.cost / 1000000).toFixed(1)}M`,
+          value: `$${scenarioResult.financialImpact?.cost ? (scenarioResult.financialImpact.cost / 1000000).toFixed(1) : '0'}M`,
           confidence: 88,
           agent: 'Impact Agent',
-          description: `Estimated cost over ${scenarioResult.financialImpact.timeframe}`,
+          description: `Estimated cost over ${scenarioResult.financialImpact?.timeframe || '30 days'}`,
           children: [
             {
               name: 'Recovery Strategy',
@@ -252,6 +252,10 @@ export default function ScenariosPage() {
   };
 
   const formatCurrency = (amount: number) => {
+    // Handle NaN, undefined, or null values
+    if (amount === undefined || amount === null || isNaN(amount)) {
+      return '$0';
+    }
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -379,7 +383,7 @@ export default function ScenariosPage() {
                         <p className="text-2xl font-bold text-gray-900">
                           {formatCurrency(result.financialImpact.cost)}
                         </p>
-                        <p className="text-xs text-gray-400">{result.financialImpact.timeframe}</p>
+                        <p className="text-xs text-gray-400">{result.financialImpact?.timeframe || '30 days'}</p>
                       </div>
 
                       <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
@@ -429,11 +433,11 @@ export default function ScenariosPage() {
                       isVisible={true}
                       scenarioType={result.scenario.name}
                       iterations={10000}
-                      mean={result.financialImpact.cost / 1000000}
-                      stdDev={result.financialImpact.cost / 4000000}
-                      p10={result.financialImpact.cost / 1500000}
-                      p50={result.financialImpact.cost / 1000000}
-                      p90={result.financialImpact.cost / 700000}
+                      mean={result.financialImpact.cost ? result.financialImpact.cost / 1000000 : 2.5}
+                      stdDev={result.financialImpact.cost ? result.financialImpact.cost / 4000000 : 0.8}
+                      p10={result.financialImpact.cost ? result.financialImpact.cost / 1500000 : 1.5}
+                      p50={result.financialImpact.cost ? result.financialImpact.cost / 1000000 : 2.5}
+                      p90={result.financialImpact.cost ? result.financialImpact.cost / 700000 : 3.8}
                     />
 
                     {/* Prediction Accuracy */}

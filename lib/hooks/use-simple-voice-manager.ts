@@ -65,15 +65,7 @@ export function useSimpleVoiceManager(options: UseSimpleVoiceOptions = {}): UseS
         const voiceManager = new SimpleVoiceManager(config);
         voiceManagerRef.current = voiceManager;
 
-        // Set up event listeners
-        voiceManager.on('initialized', ({ success }: { success: boolean }) => {
-          if (success) {
-            setIsInitialized(true);
-            setIsSupported(true);
-            setError(null);
-          }
-        });
-
+        // Set up event listeners for ongoing state changes
         voiceManager.on('stateChanged', ({ state: newState }: { state: SimpleVoiceState }) => {
           setState(newState);
         });
@@ -81,7 +73,7 @@ export function useSimpleVoiceManager(options: UseSimpleVoiceOptions = {}): UseS
         voiceManager.on('commandProcessed', ({ command, response }: { command: string; response: string }) => {
           options.onCommand?.(command);
           options.onResponse?.(response);
-          
+
           // Automatically speak the response (this will be controlled by mute state in the component)
           voiceManager.speakText(response).catch(console.error);
         });
@@ -90,6 +82,17 @@ export function useSimpleVoiceManager(options: UseSimpleVoiceOptions = {}): UseS
           setError(errorMessage);
           options.onError?.(errorMessage);
         });
+
+        // The manager initializes synchronously in the constructor,
+        // so we can check state immediately after creation
+        const currentState = voiceManager.getState();
+        setState(currentState);
+
+        // Mark as initialized if connection is ready
+        if (currentState.connectionStatus === 'connected' || currentState.connectionStatus === 'disconnected') {
+          setIsInitialized(true);
+          setIsSupported(true);
+        }
 
         // Check microphone permission
         if (options.autoStart) {
@@ -100,6 +103,8 @@ export function useSimpleVoiceManager(options: UseSimpleVoiceOptions = {}): UseS
         console.error('Failed to initialize voice system:', err);
         setError(err instanceof Error ? err.message : 'Voice initialization failed');
         setIsSupported(false);
+        // Still mark as initialized so we don't show loading forever
+        setIsInitialized(true);
       }
     };
 

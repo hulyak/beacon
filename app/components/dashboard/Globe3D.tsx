@@ -154,7 +154,12 @@ function NodeMarker({ node }: { node: typeof supplyChainNodes[0] }) {
       </mesh>
 
       {/* Always visible label */}
-      <Html distanceFactor={6} style={{ pointerEvents: 'none' }}>
+      <Html
+        distanceFactor={6}
+        style={{ pointerEvents: 'none', zIndex: 1 }}
+        zIndexRange={[0, 10]}
+        prepend
+      >
         <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium whitespace-nowrap shadow-lg border ${
           hovered ? 'scale-125' : ''
         } transition-transform ${
@@ -169,7 +174,13 @@ function NodeMarker({ node }: { node: typeof supplyChainNodes[0] }) {
 
       {/* Detailed tooltip on hover */}
       {hovered && (
-        <Html distanceFactor={5} position={[0, 0.4, 0]}>
+        <Html
+          distanceFactor={5}
+          position={[0, 0.4, 0]}
+          style={{ zIndex: 1 }}
+          zIndexRange={[0, 10]}
+          prepend
+        >
           <div className="bg-gray-900/95 text-white px-3 py-2 rounded-lg text-xs whitespace-nowrap shadow-xl border border-gray-700">
             <div className="font-bold text-sm">{node.name}</div>
             <div className="text-gray-300 capitalize">{node.type}</div>
@@ -286,7 +297,7 @@ export function Globe3D() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm"
+      className="relative z-0 bg-white border border-gray-200 rounded-xl p-4 shadow-sm"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
@@ -311,7 +322,7 @@ export function Globe3D() {
       </div>
 
       {/* 3D Globe Canvas */}
-      <div className="relative h-[400px] bg-gradient-to-b from-gray-900 to-gray-800 rounded-lg overflow-hidden">
+      <div className="relative h-[400px] bg-gradient-to-b from-gray-900 to-gray-800 rounded-lg overflow-hidden z-0" style={{ isolation: 'isolate' }}>
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
           <Scene />
         </Canvas>

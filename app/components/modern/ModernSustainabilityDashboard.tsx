@@ -203,8 +203,7 @@ export default function ModernSustainabilityDashboard({
               <ModernMetricCard
                 title="Sustainability Score"
                 value={data?.sustainability.score || 0}
-                format="decimal"
-                suffix="/100"
+                format="number"
                 status="positive"
                 change={{
                   value: data?.sustainability.improvement || 0,
@@ -220,10 +219,9 @@ export default function ModernSustainabilityDashboard({
                 title="Carbon Footprint"
                 value={data?.carbonFootprint.total || 0}
                 format="number"
-                suffix="tCO₂e"
                 status="warning"
                 change={{
-                  value: -data?.carbonFootprint.reduction || 0,
+                  value: -(data?.carbonFootprint?.reduction ?? 0),
                   period: 'vs last year',
                   trend: 'down'
                 }}
@@ -236,7 +234,6 @@ export default function ModernSustainabilityDashboard({
                 title="Industry Ranking"
                 value={data?.sustainability.ranking || 0}
                 format="number"
-                suffix="/100"
                 status="positive"
                 icon={<Award size={24} />}
                 description="Sustainability ranking in industry"
@@ -247,7 +244,6 @@ export default function ModernSustainabilityDashboard({
                 title="Green Initiatives"
                 value={data?.greenAlternatives.length || 0}
                 format="number"
-                suffix=" active"
                 status="positive"
                 icon={<Target size={24} />}
                 description="Active sustainability projects"
@@ -298,18 +294,18 @@ export default function ModernSustainabilityDashboard({
                   <div className="space-y-4">
                     <ComparisonMetric
                       title="2024 Target"
-                      current={{ label: 'Current', value: 12450, format: 'number', suffix: ' tCO₂e' }}
-                      previous={{ label: 'Target', value: 11000, format: 'number', suffix: ' tCO₂e' }}
+                      current={{ label: 'Current', value: 12450, format: 'number' }}
+                      previous={{ label: 'Target', value: 11000, format: 'number' }}
                     />
                     <ComparisonMetric
                       title="2025 Target"
-                      current={{ label: 'Projected', value: 10200, format: 'number', suffix: ' tCO₂e' }}
-                      previous={{ label: 'Target', value: 9500, format: 'number', suffix: ' tCO₂e' }}
+                      current={{ label: 'Projected', value: 10200, format: 'number' }}
+                      previous={{ label: 'Target', value: 9500, format: 'number' }}
                     />
                     <ComparisonMetric
                       title="Net Zero Goal"
-                      current={{ label: '2030 Target', value: 0, format: 'number', suffix: ' tCO₂e' }}
-                      previous={{ label: 'Current Path', value: 2400, format: 'number', suffix: ' tCO₂e' }}
+                      current={{ label: '2030 Target', value: 0, format: 'number' }}
+                      previous={{ label: 'Current Path', value: 2400, format: 'number' }}
                     />
                   </div>
                 </ModernCardContent>

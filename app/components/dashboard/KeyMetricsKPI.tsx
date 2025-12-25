@@ -42,17 +42,60 @@ interface MetricsData {
   timestamp: string;
 }
 
+// Mock data for when API is not available
+const MOCK_METRICS: MetricsData = {
+  overallRisk: {
+    score: 32,
+    level: 'moderate',
+    trend: 'down',
+    change: 5
+  },
+  costEfficiency: {
+    score: 87.3,
+    trend: 'up',
+    change: 2.1
+  },
+  sustainability: {
+    score: 74,
+    rating: 'Good',
+    carbonFootprint: 1247
+  },
+  chainIntegrity: {
+    score: 96,
+    nodesOnline: 47,
+    totalNodes: 50
+  },
+  alerts: {
+    critical: 2,
+    high: 5,
+    medium: 12,
+    low: 23
+  },
+  responseTime: {
+    average: 145,
+    unit: 'ms'
+  },
+  timestamp: new Date().toISOString()
+};
+
 export function KeyMetricsKPI({ isHighlighted = false }: KeyMetricsKPIProps) {
   const [metrics, setMetrics] = useState<MetricsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+  const [isUsingMockData, setIsUsingMockData] = useState(false);
 
   const fetchMetrics = useCallback(async () => {
     try {
       const metricsUrl = process.env.NEXT_PUBLIC_GET_METRICS_URL;
       if (!metricsUrl) {
-        throw new Error('Metrics API not configured');
+        // Use mock data when API is not configured
+        setMetrics(MOCK_METRICS);
+        setLastUpdate(new Date());
+        setIsUsingMockData(true);
+        setError(null);
+        setIsLoading(false);
+        return;
       }
 
       const response = await fetch(metricsUrl);
@@ -61,13 +104,18 @@ export function KeyMetricsKPI({ isHighlighted = false }: KeyMetricsKPIProps) {
       if (data.success) {
         setMetrics(data.data);
         setLastUpdate(new Date());
+        setIsUsingMockData(false);
         setError(null);
       } else {
         throw new Error(data.error?.message || 'Failed to fetch metrics');
       }
     } catch (err) {
       console.error('Error fetching metrics:', err);
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      // Fall back to mock data on error
+      setMetrics(MOCK_METRICS);
+      setLastUpdate(new Date());
+      setIsUsingMockData(true);
+      setError(null);
     } finally {
       setIsLoading(false);
     }

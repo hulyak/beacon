@@ -8,8 +8,8 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Don't show navigation on landing page or features page (has its own layout)
-  const showNavigation = pathname !== '/' && pathname !== '/features';
+  // Don't show navigation on landing page
+  const showNavigation = pathname !== '/';
 
   const handleNavigate = (path: string) => {
     router.push(path);
@@ -25,7 +25,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         currentPath={pathname}
         onNavigate={handleNavigate}
       />
-      
+
       {/* Main content area with proper sidebar spacing */}
       <div className="lg:pl-64">
         <main className="min-h-screen">
@@ -33,7 +33,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         </main>
       </div>
 
-      {/* Unified Voice Assistant - replaces all other voice interfaces */}
+      {/* Voice Assistant - shown on all pages */}
       <UnifiedVoiceAssistant currentPage={pathname} />
     </div>
   );

@@ -70,7 +70,7 @@ export default function AIAgentControls() {
   const [selectedScenario, setSelectedScenario] = useState('port_closure');
   const [results, setResults] = useState<AgentResult[]>([]);
 
-  const { nodes, edges, updateNode, startCascadeAnimation } = useDigitalTwin();
+  const { nodes, edges, updateNode, startCascadeAnimation, setSelectedNodeId } = useDigitalTwin();
 
   const runInfoAgent = async () => {
     setActiveAgent('info');
@@ -557,8 +557,14 @@ export default function AIAgentControls() {
 
                         {/* Card Footer */}
                         <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
-                          <button className="w-full text-xs font-medium text-cyan-600 hover:text-cyan-700 transition-colors">
-                            View Details
+                          <button
+                            onClick={() => {
+                              setSelectedNodeId(nodeResult.node.id);
+                              setResults([]);
+                            }}
+                            className="w-full text-xs font-medium text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50 py-1.5 rounded-lg transition-colors"
+                          >
+                            Select Node in Canvas
                           </button>
                         </div>
                       </motion.div>

@@ -45,12 +45,13 @@ const VoiceControlledCharts: React.FC<VoiceControlledChartsProps> = ({
   });
 
   const [sessionId] = useState(() => `session-${Date.now()}`);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null);
   const [isSupported, setIsSupported] = useState(false);
 
   useEffect(() => {
     // Check for speech recognition support
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (SpeechRecognition) {
       setIsSupported(true);
       recognitionRef.current = new SpeechRecognition();
@@ -64,7 +65,7 @@ const VoiceControlledCharts: React.FC<VoiceControlledChartsProps> = ({
         setVoiceState(prev => ({ ...prev, isListening: true, error: null }));
       };
 
-      recognition.onresult = async (event) => {
+      recognition.onresult = async (event: any) => {
         const transcript = event.results[0].transcript;
         setVoiceState(prev => ({ 
           ...prev, 
@@ -84,7 +85,7 @@ const VoiceControlledCharts: React.FC<VoiceControlledChartsProps> = ({
         }
       };
 
-      recognition.onerror = (event) => {
+      recognition.onerror = (event: any) => {
         setVoiceState(prev => ({ 
           ...prev, 
           isListening: false, 

@@ -105,7 +105,7 @@ export function FeatureCards() {
 
                 {/* Content */}
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm mb-3 line-clamp-2">{feature.description}</p>
+                <p className="text-gray-600 text-sm mb-4">{feature.description}</p>
 
                 {/* Feature Tags */}
                 <div className="flex flex-wrap gap-1.5 mb-4">

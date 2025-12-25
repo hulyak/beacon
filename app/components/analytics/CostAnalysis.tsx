@@ -149,7 +149,7 @@ export default function CostAnalysis({ financialImpact, onCostCategorySelect }: 
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, value, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
+                  label={({ name, percent }) => `${name}: ${((percent ?? 0) * 100).toFixed(1)}%`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
@@ -163,7 +163,7 @@ export default function CostAnalysis({ financialImpact, onCostCategorySelect }: 
                     />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                <Tooltip formatter={(value) => formatCurrency(typeof value === 'number' ? value : 0)} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -184,11 +184,11 @@ export default function CostAnalysis({ financialImpact, onCostCategorySelect }: 
                   height={80}
                 />
                 <YAxis tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`} />
-                <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                <Tooltip formatter={(value) => formatCurrency(typeof value === 'number' ? value : 0)} />
                 <Bar 
                   dataKey="amount" 
                   fill="#8884d8"
-                  onClick={(data) => handleCategoryClick(data.category + ' Costs')}
+                  onClick={(data) => handleCategoryClick(((data as unknown as { category: string }).category || '') + ' Costs')}
                   style={{ cursor: 'pointer' }}
                 />
               </BarChart>

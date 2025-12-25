@@ -1,24 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ReactFlowProvider } from '@xyflow/react';
 import { motion } from 'framer-motion';
-import { Network, Cpu, Activity } from 'lucide-react';
+import { Network, Cpu, Activity, CheckCircle } from 'lucide-react';
 import { DigitalTwinProvider } from '../components/digital-twin/DigitalTwinContext';
 import ReactFlowCanvas from '../components/digital-twin/ReactFlowCanvas';
 import ConfigurationPanel, { type SupplyChainConfig } from '../components/digital-twin/ConfigurationPanel';
 import AIAgentControls from '../components/digital-twin/AIAgentControls';
-import VoiceCommandHandler from '../components/digital-twin/VoiceCommandHandler';
 import { VoiceDashboardProvider } from '@/lib/voice-dashboard-context';
 import { MemoryProvider } from '@/lib/memory-context';
 
 export default function DigitalTwinPage() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  const [configApplied, setConfigApplied] = useState(false);
+  const [appliedConfig, setAppliedConfig] = useState<SupplyChainConfig | null>(null);
 
-  const handleConfigApply = (config: SupplyChainConfig) => {
+  const handleConfigApply = useCallback((config: SupplyChainConfig) => {
     console.log('Configuration applied:', config);
-    // Could use this to update network settings, regenerate nodes, etc.
-  };
+    setAppliedConfig(config);
+    setConfigApplied(true);
+    // Reset the notification after 3 seconds
+    setTimeout(() => setConfigApplied(false), 3000);
+  }, []);
 
   return (
     <MemoryProvider>
@@ -60,16 +64,32 @@ export default function DigitalTwinPage() {
                     <Activity className="w-3 h-3" />
                     Monte Carlo Enabled
                   </span>
+                  {/* Applied Config Badge */}
+                  {appliedConfig && (
+                    <span className="flex items-center gap-1.5 px-3 py-1 bg-cyan-50 text-cyan-700 rounded-full text-xs font-medium border border-cyan-200">
+                      {appliedConfig.region} • {appliedConfig.industry}
+                    </span>
+                  )}
                 </div>
+
+                {/* Configuration Applied Toast */}
+                {configApplied && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 bg-green-500 text-white rounded-lg shadow-lg"
+                  >
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="font-medium">Configuration Applied Successfully!</span>
+                  </motion.div>
+                )}
               </div>
 
               {/* Main Content Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                 {/* Left Sidebar - Configuration & Controls */}
                 <div className="lg:col-span-1 space-y-6">
-                  {/* Voice Command Handler */}
-                  <VoiceCommandHandler />
-
                   {/* Configuration Panel */}
                   <ConfigurationPanel onApply={handleConfigApply} />
                 </div>

@@ -2,7 +2,7 @@
   "name": "voiceops-functions",
   "version": "1.0.0",
   "description": "VoiceOps Cloud Functions",
-  "main": "dist/get-alerts/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "gcp-build": "npm run build",
@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@google-cloud/functions-framework": "^3.4.2",
-    "@google-cloud/vertexai": "^1.9.0"
+    "@google-cloud/vertexai": "^1.9.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

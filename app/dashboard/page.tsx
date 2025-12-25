@@ -7,9 +7,9 @@ import { SupplyChainNetwork } from '../components/dashboard/SupplyChainNetwork';
 import { AgentControls } from '../components/dashboard/AgentControls';
 import { AgentResults, AgentResult } from '../components/dashboard/AgentResults';
 import { KeyMetricsKPI } from '../components/dashboard/KeyMetricsKPI';
-import { VoiceActivationBanner } from '../components/dashboard/VoiceActivationBanner';
 import { VoiceDashboardProvider } from '@/lib/voice-dashboard-context';
 import { PageHeaderCompact } from '@/components/layout/page-header';
+import { DemoCommandsPanel } from '@/components/voice/demo-commands-panel';
 
 // Dynamic import for 3D Globe (Three.js doesn't work with SSR)
 const Globe3D = dynamic(() => import('../components/dashboard/Globe3D'), {
@@ -148,11 +148,6 @@ export default function DashboardPage() {
         
         <div className="px-4 lg:px-6">
           <div className="max-w-[1800px] mx-auto py-6">
-            {/* Voice Activation Banner - Most Prominent */}
-            <div className="mb-6">
-              <VoiceActivationBanner />
-            </div>
-
           {/* Top Section: KPIs (Full Width) */}
           <div className="mb-6">
             <KeyMetricsKPI />
@@ -162,6 +157,9 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column - Controls & Results */}
             <div className="lg:col-span-1 space-y-6">
+              {/* Voice Commands Panel - Showcase voice-first capabilities */}
+              <DemoCommandsPanel />
+
               {/* Agent Controls */}
               <AgentControls
                 onAgentTrigger={handleAgentTrigger}

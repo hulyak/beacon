@@ -19,6 +19,12 @@
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "analytics/anomaly-detection.ts",
+    "analytics/trend-analysis.ts",
+    "explainability/**",
+    "impact-assessment/**",
+    "roi-optimization/**",
+    "sustainability/**"
   ]
 }

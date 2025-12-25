@@ -266,7 +266,7 @@ export default function ModernImpactDashboard({
                 title="Cascade Effects"
                 value={data?.operational.cascadeEffects || 0}
                 format="number"
-                status="critical"
+                status="negative"
                 icon={<AlertTriangle size={24} />}
                 description="Secondary impacts detected"
                 onClick={() => onVoiceCommand?.('explain cascade effects')}
@@ -275,8 +275,7 @@ export default function ModernImpactDashboard({
               <ModernMetricCard
                 title="Recovery Time"
                 value={data?.operational.recoveryTime || 0}
-                format="decimal"
-                suffix="hrs"
+                format="number"
                 status="neutral"
                 icon={<RefreshCw size={24} />}
                 description="Average time to recover from disruptions"

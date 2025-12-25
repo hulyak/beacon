@@ -1,25 +1,5 @@
 {
   "version": 2,
-  "name": "voiceops-ai",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
-  "env": {
-    "NEXT_PUBLIC_ELEVENLABS_AGENT_ID": "@elevenlabs-agent-id",
-    "NEXT_PUBLIC_APP_URL": "@app-url",
-    "NEXT_PUBLIC_ANALYZE_RISKS_URL": "@analyze-risks-url",
-    "NEXT_PUBLIC_RUN_SCENARIO_URL": "@run-scenario-url",
-    "NEXT_PUBLIC_GET_ALERTS_URL": "@get-alerts-url"
-  },
   "headers": [
     {
       "source": "/(.*)",
@@ -42,14 +22,9 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://api.elevenlabs.io; connect-src 'self' https://api.elevenlabs.io wss://api.elevenlabs.io https://*.cloudfunctions.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://api.elevenlabs.io https://*.elevenlabs.io; worker-src 'self' blob:; connect-src 'self' https://api.elevenlabs.io wss://api.elevenlabs.io https://*.elevenlabs.io wss://*.elevenlabs.io https://*.cloudfunctions.net; media-src 'self' blob: https://*.elevenlabs.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
         }
       ]
     }
-  ],
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }

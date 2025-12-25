@@ -300,7 +300,7 @@ export function CollaborationHub() {
             <tab.icon className="w-4 h-4" />
             {tab.label}
             {tab.id === 'notifications' && notifications.length > 0 && (
-              <ModernBadge variant="destructive" className="text-xs">
+              <ModernBadge variant="error" className="text-xs">
                 {notifications.length}
               </ModernBadge>
             )}
@@ -333,7 +333,7 @@ export function CollaborationHub() {
                             </div>
                           </div>
                         </div>
-                        <ModernBadge variant={member.status === 'online' ? 'success' : 'outline'}>
+                        <ModernBadge variant={member.status === 'online' ? 'success' : 'default'}>
                           {member.status}
                         </ModernBadge>
                       </div>
@@ -349,7 +349,7 @@ export function CollaborationHub() {
                         <div className="text-xs text-gray-600 mb-2">Expertise:</div>
                         <div className="flex flex-wrap gap-1">
                           {member.expertise.map(skill => (
-                            <ModernBadge key={skill} variant="outline" className="text-xs">
+                            <ModernBadge key={skill} variant="default" className="text-xs">
                               {skill}
                             </ModernBadge>
                           ))}
@@ -383,7 +383,7 @@ export function CollaborationHub() {
                         {getNotificationIcon(notification.type)}
                         <h3 className="font-medium text-gray-900 text-sm">{notification.title}</h3>
                         {notification.actionRequired && (
-                          <ModernBadge variant="destructive" className="text-xs">
+                          <ModernBadge variant="error" className="text-xs">
                             Action Required
                           </ModernBadge>
                         )}
@@ -437,7 +437,7 @@ export function CollaborationHub() {
                         <div>
                           <h3 className="font-medium text-gray-900">{insight.title}</h3>
                           <div className="flex items-center gap-2 mt-1">
-                            <ModernBadge variant={insight.impact === 'high' ? 'destructive' : insight.impact === 'medium' ? 'warning' : 'outline'}>
+                            <ModernBadge variant={insight.impact === 'high' ? 'error' : insight.impact === 'medium' ? 'warning' : 'default'}>
                               {insight.impact.toUpperCase()} IMPACT
                             </ModernBadge>
                             <span className="text-xs text-gray-500">

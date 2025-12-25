@@ -318,13 +318,14 @@ async function handleAnomalyDetection(data: any) {
 async function handleTrendAnalysis(data: any) {
   try {
     const action = data.action || 'analyze_trend';
-    const timeSeriesData = data.data || [];
+    const timeSeriesData: Array<{ timestamp: string; value: number }> = data.data || [];
     const metricName = data.metricName || 'metric';
 
     // Generate mock time series data if none provided
-    const mockData = timeSeriesData.length > 0 ? timeSeriesData : generateMockTimeSeriesData();
+    const mockData: Array<{ timestamp: string; value: number }> = timeSeriesData.length > 0 ? timeSeriesData : generateMockTimeSeriesData();
 
-    const mockResponse = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mockResponse: any = {
       success: true,
       analysisType: action,
       metricName,
@@ -577,8 +578,8 @@ async function handleComprehensiveAnalytics(data: any) {
 /**
  * Generate mock time series data
  */
-function generateMockTimeSeriesData() {
-  const data = [];
+function generateMockTimeSeriesData(): Array<{ timestamp: string; value: number }> {
+  const data: Array<{ timestamp: string; value: number }> = [];
   const now = Date.now();
   const baseValue = 89.2;
   

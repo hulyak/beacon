@@ -204,7 +204,7 @@ export function AIInsightsPanel() {
                     <h3 className="font-medium text-gray-900 text-sm">{insight.title}</h3>
                     <div className="flex items-center gap-2 mt-1">
                       <ModernBadge 
-                        variant="outline" 
+                        variant="default" 
                         className={`text-xs ${getImpactColor(insight.impact)}`}
                       >
                         {insight.impact.toUpperCase()}
@@ -260,7 +260,7 @@ export function AIInsightsPanel() {
               {/* Action Button */}
               {insight.actionable && (
                 <ModernButton
-                  variant="outline"
+                  variant="primary"
                   size="sm"
                   className="w-full"
                   onClick={(e) => {
@@ -294,7 +294,7 @@ export function AIInsightsPanel() {
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
                       <ModernBadge 
-                        variant="outline" 
+                        variant="default" 
                         className={getImpactColor(selectedInsight.impact)}
                       >
                         {selectedInsight.impact.toUpperCase()} IMPACT
@@ -326,7 +326,7 @@ export function AIInsightsPanel() {
                   <h4 className="font-medium text-gray-900 mb-2">Affected Components</h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedInsight.data.affectedNodes.map((node, index) => (
-                      <ModernBadge key={index} variant="outline">
+                      <ModernBadge key={index} variant="default">
                         {node}
                       </ModernBadge>
                     ))}
@@ -363,7 +363,7 @@ export function AIInsightsPanel() {
               {/* Actions */}
               <div className="flex gap-3 pt-4 border-t">
                 <ModernButton
-                  variant="outline"
+                  variant="secondary"
                   onClick={() => setSelectedInsight(null)}
                   className="flex-1"
                 >

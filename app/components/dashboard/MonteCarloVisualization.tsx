@@ -139,7 +139,7 @@ export function MonteCarloVisualization({
             <Target className="w-4 h-4 text-blue-500" />
             <span className="text-xs text-gray-500 font-medium">Mean Impact</span>
           </div>
-          <div className="text-2xl font-bold text-gray-900">${mean}M</div>
+          <div className="text-2xl font-bold text-gray-900">${isNaN(mean) ? '0' : mean.toFixed(1)}M</div>
         </div>
 
         <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-100">
@@ -147,7 +147,7 @@ export function MonteCarloVisualization({
             <BarChart3 className="w-4 h-4 text-yellow-600" />
             <span className="text-xs text-yellow-700 font-medium">P10 (Best Case)</span>
           </div>
-          <div className="text-2xl font-bold text-yellow-700">${p10}M</div>
+          <div className="text-2xl font-bold text-yellow-700">${isNaN(p10) ? '0' : p10.toFixed(1)}M</div>
         </div>
 
         <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
@@ -155,7 +155,7 @@ export function MonteCarloVisualization({
             <TrendingUp className="w-4 h-4 text-blue-600" />
             <span className="text-xs text-blue-700 font-medium">P50 (Median)</span>
           </div>
-          <div className="text-2xl font-bold text-blue-700">${p50}M</div>
+          <div className="text-2xl font-bold text-blue-700">${isNaN(p50) ? '0' : p50.toFixed(1)}M</div>
         </div>
 
         <div className="p-4 bg-red-50 rounded-lg border border-red-100">
@@ -163,7 +163,7 @@ export function MonteCarloVisualization({
             <Activity className="w-4 h-4 text-red-600" />
             <span className="text-xs text-red-700 font-medium">P90 (Worst Case)</span>
           </div>
-          <div className="text-2xl font-bold text-red-700">${p90}M</div>
+          <div className="text-2xl font-bold text-red-700">${isNaN(p90) ? '0' : p90.toFixed(1)}M</div>
         </div>
       </div>
 
@@ -173,7 +173,7 @@ export function MonteCarloVisualization({
           <div>
             <span className="text-sm font-medium text-emerald-700">95% Confidence Interval</span>
             <p className="text-xs text-emerald-600 mt-1">
-              Financial impact is expected to fall between ${(mean - 2 * stdDev).toFixed(1)}M and ${(mean + 2 * stdDev).toFixed(1)}M
+              Financial impact is expected to fall between ${isNaN(mean - 2 * stdDev) ? '0.0' : (mean - 2 * stdDev).toFixed(1)}M and ${isNaN(mean + 2 * stdDev) ? '0.0' : (mean + 2 * stdDev).toFixed(1)}M
             </p>
           </div>
           <div className="text-right">

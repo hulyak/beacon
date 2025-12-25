@@ -55,7 +55,7 @@ export default function MobileExplainabilityDashboard({
   className = '', 
   onVoiceCommand,
   sessionId 
-}: MobileExplainabilityDashboardProps): JSX.Element {
+}: MobileExplainabilityDashboardProps) {
   const [data, setData] = useState<ExplainabilityData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -125,7 +125,7 @@ export default function MobileExplainabilityDashboard({
     return 'text-red-600';
   };
 
-  const getImpactIcon = (impact: 'positive' | 'negative' | 'neutral'): JSX.Element => {
+  const getImpactIcon = (impact: 'positive' | 'negative' | 'neutral'): React.ReactElement => {
     switch (impact) {
       case 'positive':
         return <CheckCircle className="h-4 w-4 text-green-500" />;

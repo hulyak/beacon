@@ -61,7 +61,7 @@ export default function MobileAnalyticsDashboard({
   className = '', 
   onVoiceCommand,
   sessionId 
-}: MobileAnalyticsDashboardProps): JSX.Element {
+}: MobileAnalyticsDashboardProps) {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -225,7 +225,7 @@ export default function MobileAnalyticsDashboard({
     touchStartRef.current = null;
   };
 
-  const getTrendIcon = (trend: 'up' | 'down' | 'stable'): JSX.Element => {
+  const getTrendIcon = (trend: 'up' | 'down' | 'stable'): React.ReactElement => {
     switch (trend) {
       case 'up':
         return <TrendingUp className="h-4 w-4 text-green-500" />;
@@ -236,7 +236,7 @@ export default function MobileAnalyticsDashboard({
     }
   };
 
-  const getAlertIcon = (type: 'warning' | 'error' | 'info'): JSX.Element => {
+  const getAlertIcon = (type: 'warning' | 'error' | 'info'): React.ReactElement => {
     const iconClass = "h-4 w-4";
     switch (type) {
       case 'error':

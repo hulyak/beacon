@@ -1,0 +1,1 @@
+{"version":3,"file":"trend-analysis.d.ts","sourceRoot":"","sources":["../../analytics/trend-analysis.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAoE5C;;;;GAIG;AACH,eAAO,MAAM,aAAa,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,KAAG,OAAO,CAAC,IAAI,CA6E7E,CAAC;AAg0BF,eAAO,MAAM,WAAW,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,KAAG,OAAO,CAAC,IAAI,CAQ3E,CAAC;AAGF,eAAe,aAAa,CAAC"}

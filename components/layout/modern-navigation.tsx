@@ -3,16 +3,13 @@
 // Modern Navigation - Shopify-inspired sidebar and header
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Leaf, 
-  Brain, 
+import {
+  BarChart3,
+  TrendingUp,
+  Leaf,
+  Brain,
   Target,
   Settings,
-  Search,
-  Bell,
-  User,
   Menu,
   X,
   ChevronDown,
@@ -23,6 +20,9 @@ import {
 } from 'lucide-react';
 import { ModernButton } from '../ui/modern-button';
 import { BeaconLogo } from '../ui/beacon-logo';
+import { SearchCommand } from './search-command';
+import { NotificationsDropdown } from './notifications-dropdown';
+import { ProfileDropdown } from './profile-dropdown';
 
 interface NavigationItem {
   id: string;
@@ -136,43 +136,21 @@ export function ModernNavigation({
             icon={isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           />
           
-          <BeaconLogo size="md" showTagline={true} className="hidden sm:block" />
+          <BeaconLogo size="md" className="hidden sm:flex" />
         </div>
 
         {/* Center - Search */}
         <div className="hidden md:flex flex-1 max-w-lg mx-8">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-            <input
-              type="text"
-              placeholder="Search analytics, reports, or ask a question..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-            />
-          </div>
+          <SearchCommand />
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {/* Notifications */}
-          <ModernButton
-            variant="ghost"
-            size="sm"
-            icon={<Bell size={16} />}
-            className="relative"
-          >
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </ModernButton>
+          <NotificationsDropdown />
 
           {/* User Menu */}
-          <ModernButton
-            variant="ghost"
-            size="sm"
-            icon={<User size={16} />}
-            iconPosition="right"
-            className="hidden sm:flex"
-          >
-            <ChevronDown size={14} />
-          </ModernButton>
+          <ProfileDropdown className="hidden sm:block" />
         </div>
       </header>
 
@@ -185,7 +163,7 @@ export function ModernNavigation({
           {/* Mobile header */}
           <div className="lg:hidden p-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
-              <BeaconLogo size="md" showTagline={true} />
+              <BeaconLogo size="md" />
               <ModernButton
                 variant="ghost"
                 size="sm"
