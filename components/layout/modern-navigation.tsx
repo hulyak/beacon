@@ -156,7 +156,7 @@ export function ModernNavigation({
 
       {/* Sidebar */}
       <aside className={cn(
-        'fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-out lg:translate-x-0 lg:top-16',
+        'fixed top-0 bottom-0 left-0 z-[60] w-64 bg-white border-r border-gray-200 shadow-xl transition-transform duration-200 ease-out lg:translate-x-0 lg:top-16',
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       )}>
         <div className="flex flex-col h-full">
@@ -205,7 +205,7 @@ export function ModernNavigation({
       {/* Mobile overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/30 z-40 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}

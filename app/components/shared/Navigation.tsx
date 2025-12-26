@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Mic, LayoutDashboard, GitBranch, Home, Network, Wifi, WifiOff, BarChart3, Target } from 'lucide-react';
+import { LayoutDashboard, GitBranch, Home, Network, Wifi, WifiOff, BarChart3, Target } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const navLinks = [
@@ -39,9 +40,13 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <Mic className="w-5 h-5 text-white" />
-            </div>
+            <Image
+              src="/logo.svg"
+              alt="Beacon - Voice-first AI supply chain intelligence"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
             <span className="text-xl font-bold text-gray-900">Beacon</span>
           </Link>
 
